@@ -20,11 +20,10 @@ const initialFormErrors = {
   terms: false,
 }
 
-const initialUser = []
 const initialDisabled = true
 
 function App() {
-  const [user, setUser] = useState(initialUser)
+  const [user, setUser] = useState([])
   const [formValues, setFormValues] = useState(initialFormValues)
   const [formErrors, setFormErrors] = useState(initialFormErrors)
   const [disabled, setDisabled] = useState(initialDisabled)
@@ -32,7 +31,8 @@ function App() {
   const getUsers = () => {
     axios.get('https://reqres.in/api/users')
       .then(res => {
-        setUser(res.data)
+        console.log(res.data)
+        setUser(res.data.data)
       })
       .catch(err => {
         debugger
@@ -42,6 +42,7 @@ function App() {
   const postNewUser = newUser => {
     axios.post('https://reqres.in/api/users', newUser)
     .then(res => {
+      console.log(res.data)
       setUser([res.data, ...user])
       setFormValues(initialFormValues)
     })
@@ -50,34 +51,34 @@ function App() {
     })
   }
 
-  const inputChange = (term, value) =>{
+  const inputChange = (name, value) =>{
     yup
-      .reach(formSchema, term)
+      .reach(formSchema, name)
       .validate(value)
       .then(valid => {
         setFormErrors({
           ...formErrors,
-          [term]: "",
+          [name]: "",
         })
       })
       .catch(err => {
         setFormErrors({
           ...formErrors,
-          [term]: err.errors[0]
+          [name]: err.errors[0]
         })
       })
       setFormValues({
         ...formValues,
-        [term]: value
+        [name]: value
       })
   }
 
-  const checkboxChange = (term, isChecked) => {
+  const checkboxChange = (name, isChecked) => {
     setFormValues({
       ...formValues,
-      terms: {
+      name: {
         ...formValues.terms,
-        [term]: isChecked,
+        [name]: isChecked,
       }
     })
   }
@@ -87,7 +88,7 @@ function App() {
       name: formValues.name.trim(),
       email: formValues.email.trim(),
       password: formValues.password.trim(),
-      terms: Object.keys(formValues.terms)
+      terms: Object.key(formValues.terms)
     }
     postNewUser(newUser)
   }

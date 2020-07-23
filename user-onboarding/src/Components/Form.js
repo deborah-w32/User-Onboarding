@@ -16,20 +16,20 @@ export default function Form(props){
     }
 
     const onCheckboxChange = evt => {
-        const { term, checked } = evt.target
-        checkboxChange(term, checked)
+        const { name, checked } = evt.target
+        checkboxChange(name, checked)
     }
 
     const onInputChange = evt => {
-        const { term, value } = evt.target
-        inputChange(term, value)
+        const { name, value } = evt.target
+        inputChange(name, value)
     }
 
     return(
         <form className='form container' onSubmit={onSubmit}>
             <div className='form-group submit'>
                 <h2>Add a New User</h2>
-                <button disabled={disabled}>Submit</button>
+                
 
                 <div className='errors'>
                     <div>{errors.name}</div>
@@ -65,17 +65,19 @@ export default function Form(props){
                         type='text'
                     />
                 </label>
+                
             </div>
 
             <div className='form-group checkbox'>
-                <label>
+                <label>Terms of Service&nbsp;
                     <input
-                    type="checkbox"
-                    name='terms'
-                    checked={values.terms === true}
-                    onChange={onCheckboxChange}
+                        type="checkbox"
+                        name='term'
+                        checked={values.terms === true}
+                        onChange={onCheckboxChange}
                     />
                 </label>
+                <button disabled={disabled}>Submit</button>
             </div>
         </form>
     )
